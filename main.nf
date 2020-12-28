@@ -152,7 +152,7 @@ process fastQc {
 }
 
 process Aligning {
-     container "quay.io/biocontainers/bbmap:38.86--h1296035_0"
+     container "quay.io/biocontainers/bowtie2:2.4.2--py38h1c8e9b9_1"
     //container "quay.io/biocontainers/bwa:0.7.17--hed695b0_7	"
 
     // Retry on fail at most three times 
@@ -163,7 +163,7 @@ process Aligning {
       tuple val(base), file("${base}.R1.paired.fastq.gz"), file("${base}.R2.paired.fastq.gz"),file("${base}.R1.unpaired.fastq.gz"), file("${base}.R2.unpaired.fastq.gz"),file("${base}_summary.csv") from Trim_out_ch
       file REFERENCE_FASTA
     output:
-      tuple val(base), file("${base}.bam"),file("${base}_summary2.csv") into Aligned_bam_ch
+      tuple val(base), file("${base}.sam"),file("${base}_summary2.csv") into Aligned_bam_ch
       tuple val (base), file("*") into Dump_ch
 
     script:
@@ -171,8 +171,8 @@ process Aligning {
     #!/bin/bash
 
     cat ${base}*.fastq.gz > ${base}_cat.fastq.gz
-    /usr/local/bin/bbmap.sh in=${base}_cat.fastq.gz outm=${base}.bam ref=${REFERENCE_FASTA} -Xmx6g > bbmap_out.txt 2>&1
-    reads_mapped=\$(cat bbmap_out.txt | grep "mapped:" | cut -d\$'\\t' -f3)
+    /usr/local/bin/bowtie2-build ${REFERENCE_FASTA} NC_045512.2
+    /usr/local/bin/bowtie2 -x NC_045512.2 -U ${base}_cat.fastq.gz > ${base}.sam
 
     cp ${base}_summary.csv ${base}_summary2.csv
     printf ",\$reads_mapped" >> ${base}_summary2.csv
@@ -295,7 +295,7 @@ process NameSorting {
     maxRetries 3
 
     input:
-      tuple val (base), file("${base}.bam"),file("${base}_summary2.csv") from Aligned_bam_ch
+      tuple val (base), file("${base}.sam"),file("${base}_summary2.csv") from Aligned_bam_ch
     output:
       tuple val (base), file("${base}.sorted.sam"),file("${base}_summary2.csv") into Sorted_sam_ch
     
@@ -304,7 +304,7 @@ process NameSorting {
     script:
     """
     #!/bin/bash
-    samtools sort -@ ${task.cpus} -n -O sam ${base}.bam > ${base}.sorted.sam
+    samtools sort -@ ${task.cpus} -n -O sam ${base}.sam > ${base}.sorted.sam
 
     """
 }
