@@ -172,7 +172,7 @@ process Aligning {
 
     cat ${base}*.fastq.gz > ${base}_cat.fastq.gz
     /usr/local/bin/bowtie2-build ${REFERENCE_FASTA} NC_045512.2
-    /usr/local/bin/bowtie2 -x NC_045512.2 -U ${base}_cat.fastq.gz > ${base}.sam
+    /usr/local/bin/bowtie2 -p ${task.cpus} -x NC_045512.2 -U ${base}_cat.fastq.gz > ${base}.sam
 
     cp ${base}_summary.csv ${base}_summary2.csv
     printf ",\$reads_mapped" >> ${base}_summary2.csv
