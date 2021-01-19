@@ -435,6 +435,7 @@ process generateConsensus {
     then
         # Parallelize pileup based on number of cores
         splitnum=$(($((29903/!{task.cpus}))+1))
+        echo $splitnum
         perl !{VCFUTILS} splitchr -l $splitnum !{REFERENCE_FASTA_FAI} | \\
         #cat !{SPLITCHR} | \\
             xargs -I {} -n 1 -P !{task.cpus} sh -c \\
