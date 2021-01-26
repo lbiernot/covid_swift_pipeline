@@ -109,7 +109,7 @@ CORRECT_AF_BCFTOOLS = file("${baseDir}/annotation/correct_AF_bcftools.py")
 // Paired end first three steps
 if(params.SINGLE_END == false){ 
     input_read_ch = Channel
-        .fromFilePairs("${params.INPUT}*_R{1,2}*.gz")
+        .fromFilePairs("${params.INPUT}*R{1,2}*.gz")
         .ifEmpty { error "Cannot find any FASTQ pairs in ${params.INPUT} ending with .gz" }
         .map { it -> [it[0], it[1][0], it[1][1]]}
 
