@@ -522,7 +522,7 @@ if(params.VARIANTS != false) {
         container "quay.io/vpeddu/lava_image:latest"
 
         input:
-            tuple val(base),val(bamsize),file("${base}_pre_bcftools.vcf") from Vcf_ch
+            tuple val(base),val(bamsize),file("${base}_bcftools.vcf") from Vcf_ch
             file MAT_PEPTIDES
             file MAT_PEPTIDE_ADDITION
             file RIBOSOMAL_SLIPPAGE
