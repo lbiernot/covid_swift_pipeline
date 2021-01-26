@@ -158,28 +158,28 @@ process Trimming {
     """
 }
 
-process fastQc {
-    container "quay.io/biocontainers/fastqc:0.11.9--0"
-
-	// Retry on fail at most three times 
-   errorStrategy 'retry'
-    maxRetries 3
-
-    input:
-      tuple val(base), file(R1),file(R2),file("${base}.R1.paired.fastq.gz"), file("${base}.R2.paired.fastq.gz") from Trim_out_ch2
-    output: 
-      file("*fastqc*") into Fastqc_ch 
-
-    publishDir "${params.OUTDIR}fastqc", mode: 'copy'
-
-    script:
-    """
-   #!/bin/bash
-
-    /usr/local/bin/fastqc ${R1} ${R2} ${base}.R1.paired.fastq.gz ${base}.R2.paired.fastq.gz
-
-    """
-}
+#process fastQc {
+#    container "quay.io/biocontainers/fastqc:0.11.9--0"
+#
+#	// Retry on fail at most three times 
+#   errorStrategy 'retry'
+#    maxRetries 3
+#
+#    input:
+#      tuple val(base), file(R1),file(R2),file("${base}.R1.paired.fastq.gz"), file("${base}.R2.paired.fastq.gz") from Trim_out_ch2
+#    output: 
+#      file("*fastqc*") into Fastqc_ch 
+#
+#    publishDir "${params.OUTDIR}fastqc", mode: 'copy'
+#
+#    script:
+#    """
+#   #!/bin/bash
+#
+#    /usr/local/bin/fastqc ${R1} ${R2} ${base}.R1.paired.fastq.gz ${base}.R2.paired.fastq.gz
+#
+#    """
+#}
 
 process Aligning {
      container "quay.io/biocontainers/bbmap:38.86--h1296035_0"
