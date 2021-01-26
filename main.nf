@@ -546,7 +546,7 @@ if(params.VARIANTS != false) {
         then
             # Fixes ploidy issues.
             #awk -F $\'\t\' \'BEGIN {FS=OFS="\t"}{gsub("0/0","0/1",$10)gsub("0/0","1/0",$11)gsub("1/1","0/1",$10)gsub("1/1","1/0",$11)}1\' !{base}_lofreq.vcf > !{base}_p.vcf
-            awk -F $\'\t\' \'BEGIN {FS=OFS="\t"}{gsub("0/0","0/1",$10)gsub("0/0","1/0",$11)gsub("1/1","1/0",$10)gsub("1/1","1/0",$11)}1\' !{base}_pre_bcftools.vcf > !{base}_p.vcf
+            awk -F $\'\t\' \'BEGIN {FS=OFS="\t"}{gsub("0/0","0/1",$10)gsub("0/0","1/0",$11)gsub("1/1","1/0",$10)gsub("1/1","1/0",$11)}1\' !{base}_bcftools.vcf > !{base}_p.vcf
 
             # Converts VCF to .avinput for Annovar.
             file="!{base}""_p.vcf"
