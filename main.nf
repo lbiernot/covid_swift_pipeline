@@ -392,7 +392,7 @@ process generateConsensus {
         file(INDEX_FILE)
         file("${base}_summary.csv")
         file("${base}.clipped.cleaned.bam")
-        tuple val(base), val(bamsize), file("${base}_pre_bcftools.vcf") into Vcf_ch
+        tuple val(base), val(bamsize), file("${base}_bcftools.vcf") into Vcf_ch
 
     publishDir params.OUTDIR, mode: 'copy'
 
