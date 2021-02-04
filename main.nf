@@ -580,7 +580,7 @@ if(params.VARIANTS != false) {
         fi
 
         '''
-    }
+}
 
 #    process annotateVariants_Lofreq {
 #        errorStrategy 'retry'
